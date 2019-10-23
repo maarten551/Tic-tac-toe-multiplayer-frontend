@@ -1,0 +1,10 @@
+<p>lobby-overview-component works!</p>
+<ng-container>
+  <div *ngFor="let lobby of lobbiesInOverview" style="border: solid black 1px;">
+    <p>Leader: {{lobby.leader.username}}</p>
+    <p>Players:</p>
+    <ul>
+      <li *ngFor="let player of lobby.players">{{player.username}}</li>
+    </ul>
+  </div>
+</ng-container>
