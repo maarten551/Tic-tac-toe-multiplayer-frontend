@@ -5,6 +5,8 @@ import {RxStompService} from '@stomp/ng2-stompjs';
 import {Message} from '@stomp/stompjs';
 import {Lobby} from './model/Lobby';
 import {log} from 'util';
+import {PlayerService} from './service/player.service';
+import {Player} from './model/Player';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,7 @@ export class AppComponent {
   private inputChatMessage = '';
   private inputName = '';
 
-  constructor(private rxStompService: RxStompService) {
+  constructor(private rxStompService: RxStompService, private playerService: PlayerService) {
     this.initializeWebSocketConnection();
   }
 
@@ -35,12 +37,12 @@ export class AppComponent {
   }
 
   private sendChatMessage(): void {
-    this.rxStompService.publish({destination: '/app/send/message', body: this.inputChatMessage, headers: {}});
+    this.rxStompService.publish({destination: '/send/message', body: this.inputChatMessage, headers: {}});
     this.inputChatMessage = '';
   }
 
   private sendUsername(): void {
-    this.rxStompService.publish({destination: '/app/send/username', body: this.inputName, headers: {}});
+    this.rxStompService.publish({destination: '/send/players/set-username', body: this.inputName, headers: {}});
     this.inputName = '';
   }
 }

@@ -2,6 +2,7 @@ import {Model} from './Model';
 
 export class Player extends Model {
   private _sessionId: string;
+  private _username: string;
 
   get sessionId(): string {
     return this._sessionId;
@@ -10,8 +11,6 @@ export class Player extends Model {
   set sessionId(value: string) {
     this._sessionId = value;
   }
-
-  private _username: string;
 
   get username(): string {
     return this._username;

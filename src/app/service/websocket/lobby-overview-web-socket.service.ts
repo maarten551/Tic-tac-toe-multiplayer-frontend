@@ -15,7 +15,7 @@ export class LobbyOverviewWebSocketService extends WebSocketService<Lobby[]> {
   }
 
   protected connectToWebSocket(): void {
-    this.rxStompService.watch('/app/lobbies').subscribe((message: Message) => {
+    this.rxStompService.watch('/lobbies').subscribe((message: Message) => {
       const parsedMessage: string[] = JSON.parse(message.body);
       const lobbies: Lobby[] = parsedMessage.map(lobbyJson => new Lobby().deserialize(lobbyJson));
 

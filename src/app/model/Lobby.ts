@@ -1,9 +1,12 @@
-import {Deserializable} from './Deserializable';
 import {Model} from './Model';
 import {Player} from './Player';
 
 export class Lobby extends Model {
   private _id: string;
+  private _name: string;
+  private _leader: Player;
+  private _players: Player[];
+  private _playerColor: Map<Player, string>;
 
   get id(): string {
     return this._id;
@@ -13,7 +16,13 @@ export class Lobby extends Model {
     this._id = value;
   }
 
-  private _leader: Player;
+  get name(): string {
+    return this._name;
+  }
+
+  set name(value: string) {
+    this._name = value;
+  }
 
   get leader(): Player {
     return this._leader;
@@ -23,8 +32,6 @@ export class Lobby extends Model {
     this._leader = value;
   }
 
-  private _players: Player[];
-
   get players(): Player[] {
     return this._players;
   }
@@ -32,8 +39,6 @@ export class Lobby extends Model {
   set players(value: Player[]) {
     this._players = value;
   }
-
-  private _playerColor: Map<Player, string>;
 
   get playerColor(): Map<Player, string> {
     return this._playerColor;

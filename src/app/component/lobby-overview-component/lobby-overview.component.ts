@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LobbyOverviewWebSocketService} from '../../service/websocket/lobby-overview-web-socket.service';
 import {Lobby} from '../../model/Lobby';
+import {PlayerService} from '../../service/player.service';
+import {RxStompService} from '@stomp/ng2-stompjs';
 
 @Component({
   selector: 'app-lobby-overview-component',
@@ -9,8 +11,9 @@ import {Lobby} from '../../model/Lobby';
 })
 export class LobbyOverviewComponent implements OnInit, OnDestroy {
   private lobbiesInOverview: Lobby[] = [];
+  private newLobbyName = '';
 
-  constructor(private lobbyOverviewWebSocketService: LobbyOverviewWebSocketService) {
+  constructor(private rxStompService: RxStompService, private playerService: PlayerService, private lobbyOverviewWebSocketService: LobbyOverviewWebSocketService) {
   }
 
   ngOnInit() {
@@ -19,5 +22,10 @@ export class LobbyOverviewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.lobbyOverviewWebSocketService.removeSubscriber(this);
+  }
+
+  private createNewLobby(): void {
+    this.rxStompService.publish({destination: '/send/lobbies/create', body: this.newLobbyName, headers: {}});
+    this.newLobbyName = '';
   }
 }
