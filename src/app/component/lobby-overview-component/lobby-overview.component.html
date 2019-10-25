@@ -15,7 +15,15 @@
     <p>Leader: {{this.playerService.getPlayerBySessionId(lobby.leader.sessionId).username}}</p>
     <p>Players:</p>
     <ul>
-      <li *ngFor="let player of lobby.players">{{this.playerService.getPlayerBySessionId(player.sessionId).username}}</li>
+      <li
+        *ngFor="let player of lobby.players">{{this.playerService.getPlayerBySessionId(player.sessionId).username}}</li>
     </ul>
+
+    <ng-container *ngIf="!this.isCurrentPlayerInLobby(lobby)">
+      <button (click)="this.joinLobby(lobby)">Join lobby</button>
+    </ng-container>
+    <ng-container *ngIf="this.isCurrentPlayerInLobby(lobby)">
+      <button (click)="this.leaveCurrentJoinedLobby()">Leave lobby</button>
+    </ng-container>
   </div>
 </ng-container>

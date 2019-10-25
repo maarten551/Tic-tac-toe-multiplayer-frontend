@@ -7,6 +7,7 @@ import {Lobby} from './model/Lobby';
 import {log} from 'util';
 import {PlayerService} from './service/player.service';
 import {Player} from './model/Player';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -19,13 +20,17 @@ export class AppComponent {
   private inputChatMessage = '';
   private inputName = '';
 
-  constructor(private rxStompService: RxStompService, private playerService: PlayerService) {
+  constructor(private rxStompService: RxStompService, private playerService: PlayerService, private toastr: ToastrService) {
     this.initializeWebSocketConnection();
   }
 
   private initializeWebSocketConnection(): void {
     this.rxStompService.watch('/chat').subscribe((message: Message) => {
       this.messages.push(message.body);
+    });
+
+    this.rxStompService.watch('/user/errors').subscribe((message: Message) => {
+      this.toastr.error(message.body);
     });
 
     // this.rxStompService.watch('/app/lobbies').subscribe((message: Message) => {
@@ -37,11 +42,20 @@ export class AppComponent {
   }
 
   private sendChatMessage(): void {
+    if (this.inputChatMessage.length === 0) {
+      return;
+    }
+
     this.rxStompService.publish({destination: '/send/message', body: this.inputChatMessage, headers: {}});
+    this.toastr.success(this.inputChatMessage);
     this.inputChatMessage = '';
   }
 
   private sendUsername(): void {
+    if (this.inputName.length === 0) {
+      return;
+    }
+
     this.rxStompService.publish({destination: '/send/players/set-username', body: this.inputName, headers: {}});
     this.inputName = '';
   }
