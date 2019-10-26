@@ -3,25 +3,17 @@ import {LobbyOverviewWebSocketService} from '../../service/websocket/lobby-overv
 import {Lobby} from '../../model/Lobby';
 import {PlayerService} from '../../service/player.service';
 import {RxStompService} from '@stomp/ng2-stompjs';
+import {LobbyService} from '../../service/lobby.service';
 
 @Component({
   selector: 'app-lobby-overview-component',
   templateUrl: './lobby-overview.component.html',
   styleUrls: ['./lobby-overview.component.scss']
 })
-export class LobbyOverviewComponent implements OnInit, OnDestroy {
-  private lobbiesInOverview: Lobby[] = [];
+export class LobbyOverviewComponent {
   private newLobbyName = '';
 
-  constructor(private rxStompService: RxStompService, private playerService: PlayerService, private lobbyOverviewWebSocketService: LobbyOverviewWebSocketService) {
-  }
-
-  ngOnInit() {
-    this.lobbyOverviewWebSocketService.addSubscriber(this, result => this.lobbiesInOverview = result);
-  }
-
-  ngOnDestroy(): void {
-    this.lobbyOverviewWebSocketService.removeSubscriber(this);
+  constructor(private rxStompService: RxStompService, private lobbyService: LobbyService, private playerService: PlayerService) {
   }
 
   private createNewLobby(): void {
@@ -34,14 +26,22 @@ export class LobbyOverviewComponent implements OnInit, OnDestroy {
   }
 
   private leaveCurrentJoinedLobby(): void {
+    this.lobbyService.selectedLobby = null;
+
     this.rxStompService.publish({destination: '/send/lobbies/leave-current', body: this.newLobbyName, headers: {}});
   }
 
   private joinLobby(lobby: Lobby): void {
+    this.lobbyService.selectedLobby = lobby;
+
     this.rxStompService.publish({destination: '/send/lobbies/join', body: lobby.id, headers: {}});
   }
 
-  private isCurrentPlayerInLobby(lobby: Lobby): boolean {
-    return lobby.players.some(value => value.sessionId === this.playerService.currentPlayer.sessionId);
+  private startGame(lobby: Lobby): void {
+    this.rxStompService.publish({destination: `/send/lobby/${lobby.id}/start-game`, body: lobby.id, headers: {}});
+  }
+
+  private isCurrentLeaderOfLobby(lobby: Lobby): boolean {
+    return lobby.leader === this.playerService.currentPlayer;
   }
 }

@@ -1,12 +1,13 @@
 import {Model} from './Model';
 import {Player} from './Player';
+import {GameSession} from './GameSession';
 
 export class Lobby extends Model {
   private _id: string;
   private _name: string;
   private _leader: Player;
   private _players: Player[];
-  private _playerColor: Map<Player, string>;
+  private _gameSession: GameSession;
 
   get id(): string {
     return this._id;
@@ -40,27 +41,29 @@ export class Lobby extends Model {
     this._players = value;
   }
 
-  get playerColor(): Map<Player, string> {
-    return this._playerColor;
-  }
-
-  set playerColor(value: Map<Player, string>) {
-    this._playerColor = value;
-  }
-
   deserialize(input: any): this {
     super.deserialize(input);
 
-    if (input._leader) {
-      this._leader = new Player().deserialize(input._leader);
+    if (input.leader) {
+      this._leader = new Player().deserialize(input.leader);
     }
 
-    if (input._players && input._players instanceof Array) {
-      this._players = input._players.map(playerJson => new Player().deserialize(playerJson));
+    if (input.gameSession) {
+      this._gameSession = new GameSession().deserialize(input.gameSession);
     }
 
-    this._playerColor = null;
+    if (input.players && input.players instanceof Array) {
+      this._players = input.players.map(playerJson => new Player().deserialize(playerJson));
+    }
 
     return this;
+  }
+
+  get gameSession(): GameSession {
+    return this._gameSession;
+  }
+
+  set gameSession(value: GameSession) {
+    this._gameSession = value;
   }
 }

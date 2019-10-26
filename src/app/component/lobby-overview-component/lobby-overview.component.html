@@ -10,19 +10,24 @@
 </div>
 <h2>Open lobbies</h2>
 <ng-container>
-  <div *ngFor="let lobby of lobbiesInOverview" style="border: solid black 1px;">
+  <div *ngFor="let lobby of lobbyService.waitingLobbies" style="border: solid black 1px;">
     <h3>{{lobby.name}}</h3>
-    <p>Leader: {{this.playerService.getPlayerBySessionId(lobby.leader.sessionId).username}}</p>
+    <p>Leader: {{lobby.leader.username}}</p>
     <p>Players:</p>
     <ul>
       <li
-        *ngFor="let player of lobby.players">{{this.playerService.getPlayerBySessionId(player.sessionId).username}}</li>
+        *ngFor="let player of lobby.players">{{player.username}}</li>
     </ul>
 
-    <ng-container *ngIf="!this.isCurrentPlayerInLobby(lobby)">
+    <ng-container *ngIf="this.isCurrentLeaderOfLobby(lobby)">
+      <button (click)="this.startGame(lobby)">Start game</button>
+    </ng-container>
+
+    <ng-container *ngIf="this.lobbyService.selectedLobby == null">
       <button (click)="this.joinLobby(lobby)">Join lobby</button>
     </ng-container>
-    <ng-container *ngIf="this.isCurrentPlayerInLobby(lobby)">
+
+    <ng-container *ngIf="lobby == this.lobbyService.selectedLobby">
       <button (click)="this.leaveCurrentJoinedLobby()">Leave lobby</button>
     </ng-container>
   </div>
