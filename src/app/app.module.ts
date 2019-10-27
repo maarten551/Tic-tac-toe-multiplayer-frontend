@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {FormsModule} from '@angular/forms';
@@ -9,7 +9,22 @@ import {LobbyOverviewComponent} from './component/lobby-overview-component/lobby
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GameSessionComponent} from './component/game-session/game-session.component';
-import {MaterialModule} from "./modules/material.module";
+import {MaterialModule} from './modules/material.module';
+import {AppConfigService} from './service/app-config.service';
+import {HttpClientModule} from '@angular/common/http';
+
+const appInitializerFn = (appConfig: AppConfigService) => {
+  return () => {
+    return appConfig.loadAppConfig().toPromise();
+  };
+};
+
+const webSocketInitializerFn = (appConfig: AppConfigService) => {
+  const myRxStompConfigValue = myRxStompConfig;
+  myRxStompConfigValue.brokerURL = appConfig.appConfig.baseWebsocketUrl;
+
+  return myRxStompConfigValue;
+};
 
 @NgModule({
   declarations: [
@@ -20,16 +35,23 @@ import {MaterialModule} from "./modules/material.module";
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
     ToastrModule.forRoot(),
   ],
   providers: [
     {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [AppConfigService]
+    }, {
       provide: InjectableRxStompConfig,
-      useValue: myRxStompConfig
-    },
-    {
+      useFactory: webSocketInitializerFn,
+      deps: [AppConfigService],
+      // useValue: myRxStompConfig
+    }, {
       provide: RxStompService,
       useFactory: rxStompServiceFactory,
       deps: [InjectableRxStompConfig]
