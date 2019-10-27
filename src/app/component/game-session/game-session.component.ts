@@ -19,6 +19,11 @@ export class GameSessionComponent implements OnInit {
   }
 
   executeMove(fieldCell: FieldCell, x: number, y: number) {
+    if (this.lobbyService.selectedLobby.gameSession.locked) {
+      this.toastr.error('The game is over, wait for a bit and you will be returned to the main screen');
+      return;
+    }
+
     if (this.playerService.currentPlayer.sessionId !== this.lobbyService.selectedLobby.gameSession.currentPlayingPlayerBySessionId) {
       this.toastr.error('It\'s not your turn!');
       return;

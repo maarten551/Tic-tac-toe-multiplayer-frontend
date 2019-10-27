@@ -1,12 +1,7 @@
 import {Component} from '@angular/core';
-import * as SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {Message} from '@stomp/stompjs';
-import {Lobby} from './model/Lobby';
-import {log} from 'util';
 import {PlayerService} from './service/player.service';
-import {Player} from './model/Player';
 import {ToastrService} from 'ngx-toastr';
 import {LobbyService} from './service/lobby.service';
 
@@ -27,7 +22,7 @@ export class AppComponent {
 
   private initializeWebSocketConnection(): void {
     this.rxStompService.watch('/chat').subscribe((message: Message) => {
-      this.messages.push(message.body);
+      this.messages.unshift(message.body);
     });
 
     this.rxStompService.watch('/user/errors').subscribe((message: Message) => {

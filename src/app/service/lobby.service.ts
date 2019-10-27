@@ -66,6 +66,8 @@ export class LobbyService {
           this.toastr.error(parsedMessage.gameOverMessage);
       }
 
+      this.selectedLobby.gameSession.locked = true;
+
       window.setTimeout(() => {
         this.selectedLobby = null;
       }, 3000);
@@ -83,12 +85,16 @@ export class LobbyService {
   set selectedLobby(lobby: Lobby) {
     if (this._selectedLobbyWatchSubscription != null) {
       this._selectedLobbyWatchSubscription.unsubscribe();
+      this._selectedLobbyWatchSubscription = null;
     }
 
     this._selectedLobby = lobby;
-    this._selectedLobbyWatchSubscription = this.rxStompService.watch(`/lobby/${lobby.id}`)
-      .subscribe(message => {
-        this.handleSelectedLobbyMessage(message);
-      });
+
+    if (lobby != null) {
+      this._selectedLobbyWatchSubscription = this.rxStompService.watch(`/lobby/${lobby.id}`)
+        .subscribe(message => {
+          this.handleSelectedLobbyMessage(message);
+        });
+    }
   }
 }
