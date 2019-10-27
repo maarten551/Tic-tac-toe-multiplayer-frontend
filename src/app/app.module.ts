@@ -9,6 +9,7 @@ import {LobbyOverviewComponent} from './component/lobby-overview-component/lobby
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GameSessionComponent} from './component/game-session/game-session.component';
+import {MaterialModule} from "./modules/material.module";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {GameSessionComponent} from './component/game-session/game-session.compon
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
+    MaterialModule,
     ToastrModule.forRoot(),
   ],
   providers: [
