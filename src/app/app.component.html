@@ -25,5 +25,6 @@
 <ul>
   <li *ngFor="let message of messages">{{message}}</li>
 </ul>
-<app-lobby-overview-component></app-lobby-overview-component>
+<app-lobby-overview-component *ngIf="!this.isSelectedGameStarted()"></app-lobby-overview-component>
+<app-game-session *ngIf="this.isSelectedGameStarted()"></app-game-session>
 

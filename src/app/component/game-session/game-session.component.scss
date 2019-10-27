@@ -1,0 +1,31 @@
+#game-session-player-list {
+  border: 1px black solid;
+  padding: 10px;
+  display: inline-block;
+  width: 19%;
+  margin-right: 1%;
+
+  .game-session-player-color-icon {
+    border: 1px solid black;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+}
+
+#game-session-play-field-container {
+  border: 1px solid black;
+  display: inline-block;
+  width: 73%;
+  margin-left: 1%;
+  padding: 10px 2%;
+
+  table#game-session-play-field {
+    td {
+      border: 1px solid black;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

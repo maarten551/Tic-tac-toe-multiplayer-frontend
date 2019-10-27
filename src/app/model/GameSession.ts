@@ -1,13 +1,23 @@
 import {Model} from './Model';
+import {FieldCell} from './FieldCell';
 
 export class GameSession extends Model {
   private _playerColors: Map<string, string>;
   private _isActive: boolean;
   private _turnCounter: number;
   private _currentPlayingPlayerBySessionId: string;
+  private _field: FieldCell[][] = [];
 
   deserialize(input: any): this {
-    return super.deserialize(input);
+    super.deserialize(input);
+
+    if (input.field) {
+      this._field = input.field.map(horizontalLines => {
+        return horizontalLines.map(fieldCell => new FieldCell().deserialize(fieldCell));
+      });
+    }
+
+    return this;
   }
 
   get isActive(): boolean {
@@ -40,5 +50,13 @@ export class GameSession extends Model {
 
   set currentPlayingPlayerBySessionId(value: string) {
     this._currentPlayingPlayerBySessionId = value;
+  }
+
+  get field(): FieldCell[][] {
+    return this._field;
+  }
+
+  set field(value: FieldCell[][]) {
+    this._field = value;
   }
 }

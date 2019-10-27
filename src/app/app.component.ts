@@ -8,6 +8,7 @@ import {log} from 'util';
 import {PlayerService} from './service/player.service';
 import {Player} from './model/Player';
 import {ToastrService} from 'ngx-toastr';
+import {LobbyService} from './service/lobby.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ export class AppComponent {
   private inputChatMessage = '';
   private inputName = '';
 
-  constructor(private rxStompService: RxStompService, private playerService: PlayerService, private toastr: ToastrService) {
+  constructor(private rxStompService: RxStompService, private playerService: PlayerService, private lobbyService: LobbyService, private toastr: ToastrService) {
     this.initializeWebSocketConnection();
   }
 
@@ -58,5 +59,9 @@ export class AppComponent {
 
     this.rxStompService.publish({destination: '/send/players/set-username', body: this.inputName, headers: {}});
     this.inputName = '';
+  }
+
+  private isSelectedGameStarted(): boolean {
+    return this.lobbyService.selectedLobby != null && this.lobbyService.selectedLobby.gameSession.isActive;
   }
 }

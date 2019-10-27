@@ -8,11 +8,13 @@ import {myRxStompConfig} from './my-rx-stomp.config';
 import {LobbyOverviewComponent} from './component/lobby-overview-component/lobby-overview.component';
 import {ToastrModule} from 'ngx-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {GameSessionComponent} from './component/game-session/game-session.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LobbyOverviewComponent
+    LobbyOverviewComponent,
+    GameSessionComponent
   ],
   imports: [
     BrowserModule,

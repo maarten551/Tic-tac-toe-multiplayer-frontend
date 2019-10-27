@@ -5,6 +5,7 @@ import {PlayerService} from './player.service';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {Subscription} from 'rxjs';
 import {IMessage} from '@stomp/stompjs';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ import {IMessage} from '@stomp/stompjs';
 export class LobbyService {
   private _selectedLobbyWatchSubscription: Subscription = null;
   private _waitingLobbies: Lobby[] = [];
-  private _selectedLobby: Lobby;
+  private _selectedLobby: Lobby = null;
 
-  constructor(private lobbyOverviewWebSocketService: LobbyOverviewWebSocketService, private playerService: PlayerService, private rxStompService: RxStompService) {
+  constructor(private lobbyOverviewWebSocketService: LobbyOverviewWebSocketService, private playerService: PlayerService, private rxStompService: RxStompService, private toastr: ToastrService) {
     lobbyOverviewWebSocketService.addSubscriber(this, (activeLobbies: Lobby[]) => {
       // Remove all lobbies not mentioned by the server anymore
       const toBeRemovedLobbies = this._waitingLobbies.filter(waitingLobby => !activeLobbies.some(newLobby => newLobby.id === waitingLobby.id));
@@ -51,7 +52,24 @@ export class LobbyService {
     this._selectedLobby.gameSession = newLobbyData.gameSession;
     this._selectedLobby.name = newLobbyData.name;
 
-    console.warn(message.body);
+    // If we get a message, it means the game is over
+    // Clean up the code a bit, so the player can join a different lobby
+    if (parsedMessage.gameOverMessage) {
+      switch (parsedMessage.gameOverMessageType) {
+        case 'success':
+          this.toastr.success(parsedMessage.gameOverMessage);
+          break;
+        case 'warning':
+          this.toastr.warning(parsedMessage.gameOverMessage);
+          break;
+        default:
+          this.toastr.error(parsedMessage.gameOverMessage);
+      }
+
+      window.setTimeout(() => {
+        this.selectedLobby = null;
+      }, 3000);
+    }
   }
 
   get waitingLobbies(): Lobby[] {
