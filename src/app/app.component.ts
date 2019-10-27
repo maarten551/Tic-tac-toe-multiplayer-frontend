@@ -3,11 +3,17 @@ import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {Message} from '@stomp/stompjs';
+import {Lobby} from './model/Lobby';
+import {log} from 'util';
+import {PlayerService} from './service/player.service';
+import {Player} from './model/Player';
+import {ToastrService} from 'ngx-toastr';
+import {LobbyService} from './service/lobby.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   private title = 'tic-tac-toe-front-end';
@@ -15,7 +21,7 @@ export class AppComponent {
   private inputChatMessage = '';
   private inputName = '';
 
-  constructor(private rxStompService: RxStompService) {
+  constructor(private rxStompService: RxStompService, private playerService: PlayerService, private lobbyService: LobbyService, private toastr: ToastrService) {
     this.initializeWebSocketConnection();
   }
 
@@ -23,15 +29,39 @@ export class AppComponent {
     this.rxStompService.watch('/chat').subscribe((message: Message) => {
       this.messages.push(message.body);
     });
+
+    this.rxStompService.watch('/user/errors').subscribe((message: Message) => {
+      this.toastr.error(message.body);
+    });
+
+    // this.rxStompService.watch('/app/lobbies').subscribe((message: Message) => {
+    //   const parsedMessage: string[] = JSON.parse(message.body);
+    //   const lobbies: Lobby[] = parsedMessage.map(lobbyJson => new Lobby().deserialize(lobbyJson));
+    //
+    //   lobbies.forEach(value => console.log(value));
+    // });
   }
 
   private sendChatMessage(): void {
-    this.rxStompService.publish({destination: '/app/send/message', body: this.inputChatMessage, headers: {}});
+    if (this.inputChatMessage.length === 0) {
+      return;
+    }
+
+    this.rxStompService.publish({destination: '/send/message', body: this.inputChatMessage, headers: {}});
+    this.toastr.success(this.inputChatMessage);
     this.inputChatMessage = '';
   }
 
   private sendUsername(): void {
-    this.rxStompService.publish({destination: '/app/send/username', body: this.inputName, headers: {}});
+    if (this.inputName.length === 0) {
+      return;
+    }
+
+    this.rxStompService.publish({destination: '/send/players/set-username', body: this.inputName, headers: {}});
     this.inputName = '';
+  }
+
+  private isSelectedGameStarted(): boolean {
+    return this.lobbyService.selectedLobby != null && this.lobbyService.selectedLobby.gameSession.isActive;
   }
 }

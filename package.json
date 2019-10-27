@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~8.2.0",
+    "@angular/animations": "^8.2.12",
     "@angular/common": "~8.2.0",
     "@angular/compiler": "~8.2.0",
     "@angular/core": "~8.2.0",
@@ -19,7 +19,9 @@
     "@angular/platform-browser": "~8.2.0",
     "@angular/platform-browser-dynamic": "~8.2.0",
     "@angular/router": "~8.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^5.1.2",
     "@stomp/ng2-stompjs": "^7.2.0",
+    "ngx-toastr": "^11.1.2",
     "rxjs": "~6.4.0",
     "sockjs-client": "^1.4.0",
     "stompjs": "^2.3.3",

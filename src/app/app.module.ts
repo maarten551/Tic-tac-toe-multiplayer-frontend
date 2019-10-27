@@ -1,19 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {FormsModule} from '@angular/forms';
 import {InjectableRxStompConfig, RxStompService, rxStompServiceFactory} from '@stomp/ng2-stompjs';
-import { myRxStompConfig } from './my-rx-stomp.config';
+import {myRxStompConfig} from './my-rx-stomp.config';
+import {LobbyOverviewComponent} from './component/lobby-overview-component/lobby-overview.component';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {GameSessionComponent} from './component/game-session/game-session.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LobbyOverviewComponent,
+    GameSessionComponent
   ],
-    imports: [
-        BrowserModule,
-        FormsModule
-    ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+  ],
   providers: [
     {
       provide: InjectableRxStompConfig,
@@ -27,4 +35,5 @@ import { myRxStompConfig } from './my-rx-stomp.config';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

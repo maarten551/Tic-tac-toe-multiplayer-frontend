@@ -1,0 +1,34 @@
+<h2>Create new lobby</h2>
+<div>
+  <form (ngSubmit)="this.createNewLobby()">
+    <label>
+      Name for new lobby:
+      <input type="text" [(ngModel)]="this.newLobbyName" name="input-message" />
+    </label>
+    <button type="submit">Create new lobby</button>
+  </form>
+</div>
+<h2>Open lobbies</h2>
+<ng-container>
+  <div *ngFor="let lobby of lobbyService.waitingLobbies" style="border: solid black 1px;">
+    <h3>{{lobby.name}}</h3>
+    <p>Leader: {{lobby.leader.username}}</p>
+    <p>Players:</p>
+    <ul>
+      <li
+        *ngFor="let player of lobby.players">{{player.username}}</li>
+    </ul>
+
+    <ng-container *ngIf="this.isCurrentLeaderOfLobby(lobby)">
+      <button (click)="this.startGame(lobby)">Start game</button>
+    </ng-container>
+
+    <ng-container *ngIf="this.lobbyService.selectedLobby == null">
+      <button (click)="this.joinLobby(lobby)">Join lobby</button>
+    </ng-container>
+
+    <ng-container *ngIf="lobby == this.lobbyService.selectedLobby">
+      <button (click)="this.leaveCurrentJoinedLobby()">Leave lobby</button>
+    </ng-container>
+  </div>
+</ng-container>
