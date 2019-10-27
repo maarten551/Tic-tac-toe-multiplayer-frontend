@@ -6,6 +6,7 @@ export class GameSession extends Model {
   private _isActive: boolean;
   private _turnCounter: number;
   private _currentPlayingPlayerBySessionId: string;
+  private _locked = false;
   private _field: FieldCell[][] = [];
 
   deserialize(input: any): this {
@@ -58,5 +59,13 @@ export class GameSession extends Model {
 
   set field(value: FieldCell[][]) {
     this._field = value;
+  }
+
+  get locked(): boolean {
+    return this._locked;
+  }
+
+  set locked(value: boolean) {
+    this._locked = value;
   }
 }

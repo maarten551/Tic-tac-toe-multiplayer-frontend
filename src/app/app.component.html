@@ -21,8 +21,8 @@
   </label>
   <button type="submit">Submit</button>
 </form>
-<p>Message history:</p>
-<ul>
+<h3>Message history:</h3>
+<ul style="height: 150px; overflow-y: scroll;">
   <li *ngFor="let message of messages">{{message}}</li>
 </ul>
 <app-lobby-overview-component *ngIf="!this.isSelectedGameStarted()"></app-lobby-overview-component>
