@@ -11,3 +11,31 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background:
   padding-left: 8px;
   padding-right: 8px;
 }
+
+.full-width {
+  width: 100%;
+}
+.spacing-bottom {
+  margin-bottom: 12px;
+}
+div.buttons {
+  display: flex;
+  flex-direction: row-reverse;
+  > button:not(:first-child) {
+    margin-right: 8px;
+  }
+}
+form.inline {
+  display: flex;
+  align-items: center;
+  > *:not(:first-child) {
+    margin-left: 6px;
+  }
+  > *:not(:last-child) {
+    margin-right: 6px;
+  }
+  button {
+    flex-shrink: 0;
+  }
+}
+

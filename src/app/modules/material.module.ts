@@ -23,6 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 const MatModules = [
   MatProgressSpinnerModule,
@@ -33,6 +34,7 @@ const MatModules = [
   MatFormFieldModule,
   MatExpansionModule,
   MatSnackBarModule,
+  MatGridListModule,
   MatCheckboxModule,
   MatTooltipModule,
   MatToolbarModule,

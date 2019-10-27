@@ -1,31 +1,46 @@
-#game-session-player-list {
-  border: 1px black solid;
-  padding: 10px;
-  display: inline-block;
-  width: 19%;
-  margin-right: 1%;
+@import "~src/app/styles/variables";
 
-  .game-session-player-color-icon {
-    border: 1px solid black;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+.wrapper {
+  display: flex;
+  align-items: stretch;
+  mat-card.section-players {
+    flex-basis: 200px;
+    flex-shrink: 0;
+    margin-right: 12px;
+    word-break: break-word;
+    div.player-list {
+      display: flex;
+      flex-direction: column;
+      div.player {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+        span.player--color-badge {
+          flex-shrink: 0;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border-radius: 6px;
+          margin-right: 12px;
+          padding: 0;
+        }
+      }
+    }
   }
-}
-
-#game-session-play-field-container {
-  border: 1px solid black;
-  display: inline-block;
-  width: 73%;
-  margin-left: 1%;
-  padding: 10px 2%;
-
-  table#game-session-play-field {
-    td {
-      border: 1px solid black;
-      width: 20px;
-      height: 20px;
+  mat-card.section-game {
+    flex-basis: 100%;
+    table.game-field {
+      td {
+        box-shadow: $elevation-1;
+        background: #e8e8e8;
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+        transition: box-shadow 250ms;
+        &:hover {
+          box-shadow: $elevation-2;
+        }
+      }
     }
   }
 }
