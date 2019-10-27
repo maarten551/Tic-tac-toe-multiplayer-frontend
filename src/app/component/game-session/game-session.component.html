@@ -1,27 +1,26 @@
-<p>game-session works!</p>
-<div id="game-session-player-list">
-  <h2>Players: </h2>
-  <ul>
-    <li *ngFor="let playerColor of lobbyService.selectedLobby.gameSession.playerColors | keyvalue">
-      <span [style.background-color]="playerColor.value" class="game-session-player-color-icon"></span>
-      <span>{{playerService.getPlayerBySessionId(playerColor.key).username}}</span>
-    </li>
-  </ul>
-</div>
-<div id="game-session-play-field-container">
-  <div id="game-session-play-field-title">
-    Game field
-  </div>
-  <div>
-    Current player is: {{this.getNameOfCurrentPlayer()}}
-  </div>
-  <table id="game-session-play-field">
-    <tbody>
-    <tr *ngFor="let fieldRow of lobbyService.selectedLobby.gameSession.field; index as i">
-      <ng-container *ngFor="let fieldCell of fieldRow; index as j">
-        <td (click)="this.executeMove(fieldCell, i, j)" [style.background-color]="fieldCell.colorOfPlayer"></td>
-      </ng-container>
-    </tr>
-    </tbody>
-  </table>
+<div class="wrapper">
+  <mat-card class="section-players">
+    <h2>Players</h2>
+    <div class="player-list">
+      <div class="player" *ngFor="let playerColor of lobbyService.selectedLobby.gameSession.playerColors | keyvalue">
+        <span [style.background-color]="playerColor.value" class="player--color-badge"></span>
+        <span>{{playerService.getPlayerBySessionId(playerColor.key).username}}</span>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card class="section-game">
+    <h2>Game</h2>
+    <div>
+      Current player is: {{this.getNameOfCurrentPlayer()}}
+    </div>
+    <table class="game-field">
+      <tbody>
+      <tr *ngFor="let fieldRow of lobbyService.selectedLobby.gameSession.field; index as i">
+        <ng-container *ngFor="let fieldCell of fieldRow; index as j">
+          <td (click)="this.executeMove(fieldCell, i, j)" [style.background-color]="fieldCell.colorOfPlayer"></td>
+        </ng-container>
+      </tr>
+      </tbody>
+    </table>
+  </mat-card>
 </div>
