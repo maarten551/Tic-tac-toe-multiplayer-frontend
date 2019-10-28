@@ -1,28 +1,67 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Change name: </h2>
-<form (ngSubmit)="this.sendUsername()">
-  <label>
-    Name:
-    <input [(ngModel)]="this.inputName" name="input-message">
-  </label>
-  <button type="submit">Submit</button>
-</form>
-<h2>Chatting: </h2>
-<form (ngSubmit)="this.sendChatMessage()">
-  <label>
-    Chat message:
-    <input [(ngModel)]="this.inputChatMessage" name="input-message">
-  </label>
-  <button type="submit">Submit</button>
-</form>
-<p>Message history:</p>
-<ul>
-  <li *ngFor="let message of messages">{{message}}</li>
-</ul>
+<ng-template #changeNameTemplate>
+  <mat-accordion style="display: block" class="spacing-bottom">
+    <mat-expansion-panel #changeNamePanel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span>Welcome <strong>{{playerService.currentPlayer.username}}</strong>!</span>
+        </mat-panel-title>
+        <mat-panel-description>
+          Change name
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
+      <form (ngSubmit)="this.sendUsername()" class="inline">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Change name" [(ngModel)]="this.inputName" name="input-message">
+        </mat-form-field>
+        <button mat-raised-button
+                type="submit"
+                color="primary"
+                [disabled]="!this.inputName.length"
+                (click)="changeNamePanel.close()">
+          <mat-icon>edit</mat-icon>
+          Change
+        </button>
+      </form>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</ng-template>
+
+<ng-template #chatWindowTemplate>
+  <mat-card class="spacing-bottom">
+    <h2>Chatting</h2>
+    <form (ngSubmit)="this.sendChatMessage()" class="inline">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Message" [(ngModel)]="this.inputChatMessage" name="input-message">
+      </mat-form-field>
+      <button mat-raised-button type="submit" color="primary" [disabled]="!this.inputChatMessage.length">
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
+
+    <ng-container *ngTemplateOutlet="chatHistoryTemplate"></ng-container>
+
+  </mat-card>
+</ng-template>
+
+<ng-template #chatHistoryTemplate>
+  <mat-list role="list" style="max-height: 150px; overflow-y: auto;">
+    <mat-list-item *ngFor="let message of messages" role="listitem">{{message}}</mat-list-item>
+  </mat-list>
+</ng-template>
+
+<ng-template #gameTemplate>
+  <app-game-session *ngIf="this.isSelectedGameStarted()"></app-game-session>
+</ng-template>
+
+<div class="container">
+  <h1 style="text-align:center">Welcome to {{ title }}!</h1>
+
+  <ng-container *ngTemplateOutlet="changeNameTemplate"></ng-container>
+
+  <ng-container *ngTemplateOutlet="chatWindowTemplate"></ng-container>
+
+  <app-lobby-overview-component *ngIf="!this.isSelectedGameStarted(); else gameTemplate"></app-lobby-overview-component>
+
+</div>

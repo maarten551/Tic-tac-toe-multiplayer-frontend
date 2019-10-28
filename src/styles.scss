@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~ngx-toastr/toastr';
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background: #f9f9f9; }
+
+.container {
+  margin-right: auto;
+  margin-left:  auto;
+  max-width: 960px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.full-width {
+  width: 100%;
+}
+.spacing-bottom {
+  margin-bottom: 12px;
+}
+div.buttons {
+  display: flex;
+  flex-direction: row-reverse;
+  > button:not(:first-child) {
+    margin-right: 8px;
+  }
+}
+form.inline {
+  display: flex;
+  align-items: center;
+  > *:not(:first-child) {
+    margin-left: 6px;
+  }
+  > *:not(:last-child) {
+    margin-right: 6px;
+  }
+  button {
+    flex-shrink: 0;
+  }
+}
+

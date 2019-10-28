@@ -1,0 +1,46 @@
+@import "~src/app/styles/variables";
+
+.wrapper {
+  display: flex;
+  align-items: stretch;
+  mat-card.section-players {
+    flex-basis: 200px;
+    flex-shrink: 0;
+    margin-right: 12px;
+    word-break: break-word;
+    div.player-list {
+      display: flex;
+      flex-direction: column;
+      div.player {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+        span.player--color-badge {
+          flex-shrink: 0;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border-radius: 6px;
+          margin-right: 12px;
+          padding: 0;
+        }
+      }
+    }
+  }
+  mat-card.section-game {
+    flex-basis: 100%;
+    table.game-field {
+      td {
+        box-shadow: $elevation-1;
+        background: #e8e8e8;
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+        transition: box-shadow 250ms;
+        &:hover {
+          box-shadow: $elevation-2;
+        }
+      }
+    }
+  }
+}
